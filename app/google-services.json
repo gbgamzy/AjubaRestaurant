@@ -1,0 +1,121 @@
+{
+  "project_info": {
+    "project_number": "1010648995759",
+    "project_id": "restaurant-ajuba",
+    "storage_bucket": "restaurant-ajuba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010648995759:android:8ce4a91866e702ff56415a",
+        "android_client_info": {
+          "package_name": "com.example.ajubarider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010648995759-ni88l7tk3hqg3amq1b0pfb36ncrstqkn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ajubarider",
+            "certificate_hash": "a75d2dff86ef4f06b4e1b3fcea46c2c085836275"
+          }
+        },
+        {
+          "client_id": "1010648995759-4jm3ba29uhov7qbf2tmgsqlnshigulo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsNhfPQvHwcUtbOkd1lwXPbFoxp6C3S8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010648995759-4jm3ba29uhov7qbf2tmgsqlnshigulo9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010648995759:android:404934e631c5b18d56415a",
+        "android_client_info": {
+          "package_name": "com.example.merchantapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010648995759-k22ahkn9pp2tiv8iqutrpqll2hvlteiq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.merchantapp",
+            "certificate_hash": "a75d2dff86ef4f06b4e1b3fcea46c2c085836275"
+          }
+        },
+        {
+          "client_id": "1010648995759-4jm3ba29uhov7qbf2tmgsqlnshigulo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsNhfPQvHwcUtbOkd1lwXPbFoxp6C3S8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010648995759-4jm3ba29uhov7qbf2tmgsqlnshigulo9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010648995759:android:63aa05acd6cd7e3d56415a",
+        "android_client_info": {
+          "package_name": "com.example.restaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010648995759-1b2makm1unmcdn4tfrmria7qur9kd6su.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.restaurant",
+            "certificate_hash": "a75d2dff86ef4f06b4e1b3fcea46c2c085836275"
+          }
+        },
+        {
+          "client_id": "1010648995759-4jm3ba29uhov7qbf2tmgsqlnshigulo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsNhfPQvHwcUtbOkd1lwXPbFoxp6C3S8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010648995759-4jm3ba29uhov7qbf2tmgsqlnshigulo9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
