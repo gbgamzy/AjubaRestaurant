@@ -45,15 +45,10 @@ class OrderAdapter(
         if(list[position].status=="D"){
             return
         }
-        var s=""
-        list[position].contents.forEach {
-            s+=it.name+" "+" x"+" ${it.quantity}"+", "
-        }
-        val image=findImage(list[position].contents[0].name)
-        if (image != null) {
-            holder.image.setImageBitmap(image.image)
-        }
-        holder.title.text=s
+
+
+
+        holder.title.text=list[position].contents
         val date=formatter.parse(list[position].date)
         val dateString=date.date.toString()+"/"+date.month.toString()
 
@@ -66,9 +61,9 @@ class OrderAdapter(
         }
 
         holder.layout1.setOnClickListener {
-            if(list[position].status=="B" && list[position].deliveryBoy!=null){
+            if(list[position].status=="B" && list[position].deliveryBoyPhone!=null){
                 val intent = Intent(context,MapsActivityOrders::class.java)
-                intent.putExtra("deliveryBoy", list[position].deliveryBoy?.phone)
+                intent.putExtra("deliveryBoy", list[position].deliveryBoyPhone)
                 startActivity(context,intent,null)
             }
         }

@@ -15,26 +15,27 @@ data class User(
 
 
     var phone:String,
-    var address:List<Address>,
-    var order:List<Order>,
+
+
     var registrationToken:List<String>
 ){
 
 }
 data class Admin(
-    var address:Address?,
+    var latitude:Double?,
+    var longitude:Double?,
     var phone:String?,
-    var prices:Prices
-)
-
-data class Prices(
     var dist1: Double?,
     var price1: Double?,
     var dist2: Double?,
     var price2: Double?,
     var dist3: Double?,
-    var price3: Double?
+    var price3: Double?,
+    var minimumDistance:Double?,
+    var minimumPrice:Double?
 )
+
+
 
 
 data class Message(
@@ -47,7 +48,9 @@ data class Image(
 
 @Entity(tableName="cart")
 data class Food(
+        var category:String,
 @PrimaryKey(autoGenerate=false)
+
     var name:String,
     var price:Int,
     var image:String,
@@ -76,10 +79,7 @@ class TypeConverter{
     fun fromFoodList(value:List<Food>?)= Gson().toJson(value)
     @TypeConverter
     fun toFoodList(value:String?)= Gson().fromJson(value,Array<Food>::class.java).toList()
-    @TypeConverter
-    fun fromContent(value:List<String>?)=Gson().toJson(value)
-    @TypeConverter
-    fun toContent(value:String?)= Gson().fromJson(value,Array<String>::class.java).toList()
+
 
 
 
@@ -103,36 +103,52 @@ data class Address(
     @PrimaryKey(autoGenerate = true)
     var uid:Int=0
 }
-data class Content(
-    var name:String,
-    var quantity:Int
-)
+
 
 data class Order(
-        var contents:List<Content>,
-        var price: Int,
-        var date:String?,
+        var OID:Int?,
+        var contents:String?,
+        var price: Int?,
+        var date: String?,
         var status:String?,
-        var address:Address,
-        var deliveryBoy: DeliveryBoy?
+        var AID:Int?,
+        var houseName:String?,
+        var streetAddress:String?,
+        var latitude:Double?,
+        var longitude:Double?,
+        var deliveryBoyName:String?,
+        var deliveryBoyPhone:String?,
 
 
-)
+        var phone:String="",
+
+
+
+        )
 data class Rider(
-    var name:String?,
-    var phone:String?,
+    var deliveryBoyName:String?,
+    var deliveryBoyPhone:String?,
     var latitude:String?,
     var longitude:String?,
 
 )
 @Entity(tableName="orders")
 data class DbOrder(
-        var contents:List<String>,
-        var price: Int,
-        var date:String,
-        var status:String,
-        var name:String,
-        var phone:String
+        var OID:Int?,
+        var contents:String?,
+        var price: Int?,
+        var date: String?,
+        var status:String?,
+        var AID:Int?,
+        var houseName:String?,
+        var streetAddress:String?,
+        var latitude:Double?,
+        var longitude:Double?,
+        var deliveryBoyName:String?,
+        var deliveryBoyPhone:String?,
+
+
+        var phone:String="",
 
 
 ){
@@ -140,8 +156,8 @@ data class DbOrder(
     var uid:Int=0
 }
 data class DeliveryBoy(
-        var name:String?,
-        var phone:String?
+        var deliveryBoyName:String?,
+        var deliveryBoyPhone: String?
 )
 
 

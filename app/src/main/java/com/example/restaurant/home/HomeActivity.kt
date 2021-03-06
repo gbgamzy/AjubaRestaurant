@@ -233,14 +233,16 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
 
                     dialog.setTitle("Place order?")
                     dialog.setPositiveButton("Yes"){ dialogInterface: DialogInterface, i: Int ->
-                        var content:ArrayList<Content> = ArrayList()
+                        var content = ""
                         filteredCart.forEach{
-                            val p:Content = Content(it.name, it.quantity)
-                            content.add(p)
+                           content += it.name+" x "+it.quantity
                         }
                         var date: Date = Date()
                         val i=formatter.format(date)
-                        val order = Order(content, price.roundToInt(), i, null, address[addressIndex!!], null)
+                        val order = Order(0,content, price.roundToInt(), i, null,0,
+                            address[addressIndex!!].houseName,address[addressIndex!!].streetAddress,
+                            address[addressIndex!!].latitude,address[addressIndex!!].longitude,"",
+                            "","")
                         Log.d("vmErrorPlaceOrder", order.toString())
                         try{
                             CoroutineScope(Dispatchers.Main).launch {
@@ -334,43 +336,47 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
         deliveryPrice=0.0
         minD=0.0
         minN=0
-        Log.d("Admin", admin?.address.toString())
-        if(adAdapter.tracker?.selection?.isEmpty == true){
+        filteredCart.forEach {
+            price+= it.quantity*it.price
+        }
 
+        if(adAdapter.tracker?.selection?.isEmpty != true && price< admin?.minimumDistance!!){
 
+            deliverable=true
+            deliveryPrice= admin?.minimumPrice!!
 
         }
 
-        else {
+        else if(adAdapter.tracker?.selection?.isEmpty != true && price>= admin?.minimumDistance!!) {
 
-            admin?.address?.latitude?.let {
-                admin?.address?.longitude?.let { it1 ->
+            admin?.latitude?.let {
+                admin?.longitude?.let { it1 ->
                     distance=getDistance(address[addressIndex!!].latitude, address[addressIndex!!].longitude,
                             it, it1)/1000
                 }
 
             }
-            Log.d("DistanceRestaurant", (admin?.prices?.dist1!!.compareTo(distance)).toString()+"xcx"+
-                    (distance>admin?.prices?.dist1!!).toString())
+            Log.d("DistanceRestaurant", (admin?.dist1!!.compareTo(distance)).toString()+"xcx"+
+                    (distance>admin?.dist1!!).toString())
 
 
-            if(distance<admin?.prices?.dist1!!){
+            if(distance<admin?.dist1!!){
 
-                minD= admin?.prices?.dist1!! -distance
+                minD= admin?.dist1!! -distance
 
                 minN=1
                 Log.d("Stats",minD.toString()+minN.toString())
             }
-            if(distance<admin?.prices?.dist2!!){
-                if((admin?.prices?.dist2!!-distance)<minD || minD==0.0){
-                    minD=admin?.prices?.dist2!!-distance
+            if(distance<admin?.dist2!!){
+                if((admin?.dist2!!-distance)<minD || minD==0.0){
+                    minD=admin?.dist2!!-distance
                     minN=2
 
                 Log.d("Stats2",minD.toString()+minN.toString())}
             }
-            if(distance<admin?.prices?.dist3!! ){
-                if((admin?.prices?.dist3!!-distance)<minD || minD==0.0 ){
-                    minD=admin?.prices?.dist3!!-distance
+            if(distance<admin?.dist3!! ){
+                if((admin?.dist3!!-distance)<minD || minD==0.0 ){
+                    minD=admin?.dist3!!-distance
                     minN=3
 
                 Log.d("Stats3",minD.toString()+minN.toString())}
@@ -379,15 +385,15 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
 
             if(minN==1){
                 deliverable=true
-                deliveryPrice=admin?.prices?.price1!!
+                deliveryPrice=admin?.price1!!
             }
             if(minN==2){
                 deliverable=true
-                deliveryPrice=admin?.prices?.price2!!
+                deliveryPrice=admin?.price2!!
             }
             if(minN==3){
                 deliverable=true
-                deliveryPrice=admin?.prices?.price3!!
+                deliveryPrice=admin?.price3!!
             }
             if(minN==0){
                 deliverable=false
@@ -397,9 +403,7 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
             Log.d("MinN",distance.toString())
 
         }
-        filteredCart.forEach {
-            price+= it.quantity*it.price
-        }
+
 
 
 

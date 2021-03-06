@@ -23,6 +23,8 @@ interface Network {
 
     @GET("/Ajuba/customer/menu")
     suspend fun getMenu():Response<List<FoodMenu>>
+    @GET("/Ajuba/customer/food")
+    suspend fun getFood():Response<List<Food>>
     @GET("/Ajuba/images/{img_id}")
     suspend fun getImage(@Path("img_id") id:String ):Response<ResponseBody>
     @POST("/Ajuba/customer/{phone}/{registrationToken}")

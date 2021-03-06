@@ -77,6 +77,37 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
 
             val list1: ArrayList<FoodMenu> = ArrayList()
 
+
+            val foods=api.getFood().body()
+            if (foods != null) {
+                foodList.addAll(foods)
+            }
+            admin.value=api.getAdmin().body()
+            Log.d("lists.",admin.value.toString())
+            val arrayList:ArrayList<Food> = ArrayList()
+            arrayList.addAll(foodList.sortedWith(compareBy { it.name }))
+
+            var allFood = FoodMenu(
+                category = "All",
+                list =  arrayList
+            )
+            list1.add(allFood)
+            list.forEach { menu->
+                var fl:ArrayList<Food> = ArrayList()
+                foodList.forEach {
+
+
+                    if(it.category==menu.category){
+                        fl.add(it)
+
+
+
+                    }
+                }
+                menu.list=fl
+
+            }
+            foodMenu.postValue(list1)
             list.forEach {
 
 
@@ -86,20 +117,11 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
                     db.addToCart(t)
 
                 }
-                foodList.addAll(it.list.sortedWith(compareBy{it.name}))
+
 
 
 
             }
-            admin.value=api.getAdmin().body()
-            Log.d("lists.",admin.value.toString())
-            var allFood = FoodMenu(
-                category = "All",
-                list = foodList.sortedWith(compareBy { it.name }).toList()
-            )
-            list1.add(allFood)
-            list1.addAll(list)
-            foodMenu.postValue(list1)
             getCart()
 
 
@@ -135,9 +157,7 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
 
             foodList.addAll(it.list)
         }
-        var allFood=FoodMenu(category = "All", list = foodList.sortedWith(compareBy { it.name }).toList())
-        list1.add(allFood)
-        db.getMenu()?.let { list1.addAll(it) }
+
         foodMenu.postValue(list1)
         getImages(foodList)
         getAddress()
@@ -157,7 +177,7 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
         db.addToCart(item)
 
     }
-    suspend fun reloadImages(foodList: ArrayList<Food>) {
+    private suspend fun reloadImages(foodList: ArrayList<Food>) {
         try{
             var images = ArrayList<Image>()
             foodList.forEach {
