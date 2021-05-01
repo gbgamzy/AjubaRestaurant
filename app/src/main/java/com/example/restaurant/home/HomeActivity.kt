@@ -225,13 +225,13 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
 
 
             btPlaceOrder.setOnClickListener{
-                Log.d("prices", (tracker as SelectionTracker<Long>?)?.selection.toString())
+                Log.d("prices", tracker?.selection.toString())
 
                 if(price==0.0 ){
                     DNASnackBar.show(this, "The cart is empty")
                     return@setOnClickListener
                 }
-                if(!deliverable || (tracker as SelectionTracker<Long>?)?.selection?.size()==0){
+                if(!deliverable || tracker?.selection?.size()==0){
                     DNASnackBar.show(this, "Long press an address, to select a valid address")
                     selected(-1)
                     rvAddressBook.requestFocus()

@@ -89,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                         TimeUnit.SECONDS,
                         this,
                         mCallBack
-                    );
+                    )
                     buttonGetOTP.visibility = View.GONE
                     editTextPhone.visibility = View.GONE
                     imageButtonLogin.visibility = View.VISIBLE
@@ -113,17 +113,17 @@ class LoginActivity : AppCompatActivity() {
 
     }
     private fun verifyCode(code: String) {
-        val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
+        val credential = PhoneAuthProvider.getCredential(verificationId, code)
         progressBar2.visibility=View.VISIBLE
         signInWithCredential(credential)
     }
 
     private fun signInWithCredential(credential: PhoneAuthCredential) {
 
-            mAuth!!.signInWithCredential(credential)
+            mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(object : OnCompleteListener<AuthResult?> {
                     override fun onComplete(task: Task<AuthResult?>) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful) {
 
 
                             CoroutineScope(Dispatchers.IO).launch {
@@ -160,7 +160,7 @@ class LoginActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(
                                 this@LoginActivity,
-                                task.getException().toString(),
+                                task.exception.toString(),
                                 Toast.LENGTH_LONG
                             ).show()
                             Log.d("errrr", task.exception?.message.toString())

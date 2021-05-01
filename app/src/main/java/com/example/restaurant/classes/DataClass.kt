@@ -14,9 +14,8 @@ data class User(
 
 
     var registrationToken:List<String>
-){
+)
 
-}
 data class Admin(
     var latitude:Double?,
     var longitude:Double?,
@@ -53,10 +52,7 @@ data class Food(
     var image:String,
 var quantity:Int=0
 
-){
-
-
-}
+)
 
 @Entity(tableName="menu")
 data class FoodMenu(

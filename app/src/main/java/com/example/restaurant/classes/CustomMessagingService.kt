@@ -30,7 +30,7 @@ class CustomMessagingService: FirebaseMessagingService() {
         super.onMessageReceived(p0)
 
         if(p0.notification!=null){
-            val data: Map<String, String> = p0.getData()
+            val data: Map<String, String> = p0.data
             val title = data["title"]
             val message = data["body"]
             if (title != null) {
@@ -58,7 +58,8 @@ class CustomMessagingService: FirebaseMessagingService() {
             val CHANNEL_NAME = BuildConfig.APPLICATION_ID + "_notification_name"
             var notificationChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
             notificationChannel.enableVibration(true)
-            notificationChannel.setVibrationPattern(longArrayOf(400, 400, 400, 400, 500, 400, 400, 400, 400))
+            notificationChannel.vibrationPattern =
+                longArrayOf(400, 400, 400, 400, 500, 400, 400, 400, 400)
 
 
             notificationChannel.setSound(sound,audioAttributes)

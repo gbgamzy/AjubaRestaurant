@@ -176,7 +176,7 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
 
     suspend fun removeFromCart(item: Food){
         var count:Int=db.getItem(item.name)
-        if(item.quantity!! > 0)
+        if(item.quantity > 0)
         item.quantity=count - 1
         db.addToCart(item)
     }
