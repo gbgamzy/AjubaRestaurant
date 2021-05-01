@@ -66,8 +66,12 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
 
 
     }
+    suspend fun reloadAdmin():Admin?{
+        admin.value=api.getAdmin().body()
+        return admin.value
+    }
 
-    suspend fun reloadMenu(){
+    suspend fun reloadMenu():Boolean{
         try{
             db.clearCart()
             db.clearMenu()
@@ -82,7 +86,8 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
             if (foods != null) {
                 foodList.addAll(foods)
             }
-            admin.value=api.getAdmin().body()
+            reloadAdmin()
+
             Log.d("lists.",admin.value.toString())
             val arrayList:ArrayList<Food> = ArrayList()
             arrayList.addAll(foodList.sortedWith(compareBy { it.name }))
@@ -104,9 +109,11 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
 
                     }
                 }
+                Log.d("FoodMenuList",fl.toString())
                 menu.list=fl
 
             }
+            list1.addAll(list)
             foodMenu.postValue(list1)
             list.forEach {
 
@@ -128,10 +135,12 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
 
             reloadImages(foodList)
             getAddress()
+            return true
 
         }
         catch(err:Exception){
             Log.d("vmErrorReloadMenu",err.toString())
+            return false
         }
 
 
@@ -230,5 +239,12 @@ class HomeActivityViewModel  @ViewModelInject constructor(private val api: Netwo
             images.add(img)
         }
         images1.postValue(images)
+    }
+    suspend fun logout(phone:String){
+        try{ api.login(phone, "") }
+        catch(err:Exception){
+
+        }
+
     }
 }

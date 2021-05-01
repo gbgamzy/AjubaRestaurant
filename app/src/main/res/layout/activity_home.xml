@@ -6,116 +6,161 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fadingEdge="horizontal|vertical"
     android:orientation="vertical"
+    android:soundEffectsEnabled="true"
     tools:context=".home.HomeActivity">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="82dp"
-            android:layout_height="94dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="680dp"
-            android:foregroundGravity="center"
-            android:translationZ="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.39"
-            app:srcCompat="@drawable/group_365" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="-20dp"
-            android:layout_marginBottom="500dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"
-            app:srcCompat="@drawable/group_264" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tbMenu"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:padding="3dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3"
-            app:tabIndicatorColor="#FF5763"
-            app:tabIndicatorFullWidth="false"
-            app:tabMode="scrollable"
-            app:tabPadding="3dp"
-            app:tabSelectedTextColor="#FF5763"
-            app:tabTextColor="#FF5763" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/strHome"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tbMenu"
-            app:layout_constraintVertical_bias="0.0">
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vpMenu"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:padding="7dp" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <ImageButton
-            android:id="@+id/btOrderHistory"
-            android:layout_width="50dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/history"
-            android:scaleType="center"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btLogOut"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.03"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_logout" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="900dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="82dp"
+                android:layout_height="94dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:foregroundGravity="center"
+                android:translationZ="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/group_365" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4"
+                app:srcCompat="@drawable/group_264" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tbMenu"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:padding="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                app:tabIndicatorColor="#FF5763"
+                app:tabIndicatorFullWidth="false"
+                app:tabMode="scrollable"
+                app:tabPadding="3dp"
+                app:tabSelectedTextColor="#FF5763"
+                app:tabTextColor="#FF5763" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="400dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/strHome"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tbMenu" />
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/strHome"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tbMenu"
+                app:layout_constraintVertical_bias="0.0">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vpMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="7dp">
+
+                </androidx.viewpager2.widget.ViewPager2>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <ImageView
+                android:id="@+id/btOrderHistory"
+
+                android:layout_width="50dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+
+
+                android:layout_marginEnd="4dp"
+                android:background="#00000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/history" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orders"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.98
+
+"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btLogOut" />
+
+
+            <ImageView
+                android:id="@+id/btLogOut"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.03"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_logout" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log out"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.015"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btLogOut" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:behavior_peekHeight="50dp"
-        app:layout_behavior="@string/bottom_sheet_behavior"
 
 
-        >
+        android:animationCache="true"
+        android:background="#00000000"
+        android:clipToPadding="true"
+        android:fillViewport="true"
+        app:behavior_peekHeight="150dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -123,19 +168,31 @@
             android:layout_height="50dp"
 
 
+            android:layout_marginTop="100dp"
             android:background="@color/design_default_color_background"
-            app:elevation="0dp">
+            android:nestedScrollingEnabled="true"
+            app:elevation="0dp"
+            app:expanded="true"
+            app:liftOnScroll="true">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/my_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:animateLayoutChanges="true"
                 android:background="@color/default_red"
-                app:contentInsetEnd="0dp"
-                app:contentInsetStart="0dp"
+
+
+                android:textDirection="firstStrongRtl"
+
+
+                app:logo="@drawable/ic_shopping_cart"
+
+
                 app:title="Cart"
 
-                app:titleMarginStart="15dp" />
+
+                app:titleMarginStart="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -246,7 +303,7 @@
 
 
                         android:gravity="center"
-                        android:text="TextView"
+
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
@@ -254,9 +311,9 @@
                         android:id="@+id/textView9"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView"
                         android:gravity="center"
-                        android:textStyle="bold"/>
+
+                        android:textStyle="bold" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -278,7 +335,6 @@
 
 
     </androidx.core.widget.NestedScrollView>
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

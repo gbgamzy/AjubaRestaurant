@@ -2,9 +2,10 @@ package com.example.restaurant
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.restaurant.api.Network
 import com.example.restaurant.classes.AdapterInterface
@@ -30,9 +31,17 @@ class OrdersActivity : AppCompatActivity(), AdapterInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_orders)
-        val actionBar=getActionBar()
+
+        // calling the action bar
+        // calling the action bar
+        val actionBar: ActionBar? = supportActionBar
+
+        // showing the back button in action bar
+
+        // showing the back button in action bar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.title="Orders"
-        setTheme(R.style.Theme_Orders)
+        //setTheme(R.style.Theme_Orders)
 
         pref=this.getSharedPreferences("appSharedPrefs", Context.MODE_PRIVATE)
         edit=pref.edit()
@@ -40,6 +49,7 @@ class OrdersActivity : AppCompatActivity(), AdapterInterface {
         phone= pref.getString("phone","").toString()
         rvOrders.layoutManager=LinearLayoutManager(this)
         adapter= OrderAdapter(list,this,this)
+
         rvOrders.adapter=adapter
 
 
@@ -49,10 +59,18 @@ class OrdersActivity : AppCompatActivity(), AdapterInterface {
     fun refresh(){
         CoroutineScope(Dispatchers.Main).launch {
             try{
-                val p=api.getOrders("7009516346").body()
+                val p=api.getOrders(phone).body()
                 list.clear()
                 Log.d("vmList",p.toString())
-                p?.let { list.addAll(it) }
+                var sortedList=p?.sortedByDescending { it.date }
+
+                if (sortedList != null) {
+                    sortedList.forEach {
+                        if(it.status!="D")
+                            list.add(it)
+                    }
+                }
+
                 adapter.notifyDataSetChanged()
 
             }

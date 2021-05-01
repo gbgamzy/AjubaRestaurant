@@ -60,36 +60,46 @@ class LoginActivity : AppCompatActivity() {
             FirebaseInstanceId.getInstance().token.toString()==pref.getString("reg","")){
             val intent = Intent(this@LoginActivity, HomeActivity::class.java)
             startActivity(intent, null)
+            finish()
         }
         imageButtonLogin.setOnClickListener {
 
             try{
-
-                verifyCode(editTextOtp.text.toString())
+                if(progressBar2.visibility==View.GONE) {
+                    verifyCode(editTextOtp.text.toString())
+                }
             }
             catch(err:Exception){
                 Log.d("LoginERror",err.toString())
+                DNASnackBar.show(this,"There seems to be a problem from our end")
+
             }
 
         }
         buttonGetOTP.setOnClickListener{
-            s=editTextPhone.text.toString()
-            if(s.length!=10){
-                DNASnackBar.show(this,"Please Enter valid Number!")
-            }
-            else{
+            try{
+                s = editTextPhone.text.toString()
+                if (s.length != 10) {
+                    DNASnackBar.show(this, "Please Enter valid Number!")
+                } else {
 
-                PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                    "+91$s",
-                    60,
-                    TimeUnit.SECONDS,
-                    this,
-                    mCallBack
-                );
-                buttonGetOTP.visibility= View.GONE
-                editTextPhone.visibility= View.GONE
-                imageButtonLogin.visibility= View.VISIBLE
-                editTextOtp.visibility= View.VISIBLE}
+                    PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                        "+91$s",
+                        60,
+                        TimeUnit.SECONDS,
+                        this,
+                        mCallBack
+                    );
+                    buttonGetOTP.visibility = View.GONE
+                    editTextPhone.visibility = View.GONE
+                    imageButtonLogin.visibility = View.VISIBLE
+                    editTextOtp.visibility = View.VISIBLE
+                }
+            }
+            catch(err:Exception){
+                DNASnackBar.show(this,"There seems to be a problem from our end")
+                
+            }
 
         }
 
@@ -104,51 +114,62 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun verifyCode(code: String) {
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
+        progressBar2.visibility=View.VISIBLE
         signInWithCredential(credential)
     }
 
     private fun signInWithCredential(credential: PhoneAuthCredential) {
-        mAuth!!.signInWithCredential(credential)
-            .addOnCompleteListener(object : OnCompleteListener<AuthResult?> {
-                override fun onComplete(task: Task<AuthResult?>) {
-                    if (task.isSuccessful()) {
+
+            mAuth!!.signInWithCredential(credential)
+                .addOnCompleteListener(object : OnCompleteListener<AuthResult?> {
+                    override fun onComplete(task: Task<AuthResult?>) {
+                        if (task.isSuccessful()) {
 
 
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val refreshedToken = FirebaseInstanceId.getInstance().token
 
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val refreshedToken = FirebaseInstanceId.getInstance().token
+                                try{
+                                    val p = api.login(
+                                        editTextPhone.text.toString(),
+                                        refreshedToken.toString()
+                                    )
+                                    Log.d("p", p.body().toString())
+                                    if (p.body()?.message == "SUCCESS") {
+                                        edit.putBoolean("loggedIn", true)
+                                        edit.putString("reg", refreshedToken.toString())
+                                        edit.putString("phone", editTextPhone.text.toString())
+                                        edit.apply()
+                                        edit.commit()
+                                        val intent =
+                                            Intent(this@LoginActivity, HomeActivity::class.java)
+                                        startActivity(intent, null)
+                                        finish()
 
-                            val p=api.login(editTextPhone.text.toString(), refreshedToken.toString())
-                            Log.d("p",p.body().toString())
-                            if(p.body()?.message  =="SUCCESS"){
-                                edit.putBoolean("loggedIn",true)
-                                edit.putString("reg",refreshedToken.toString())
-                                edit.putString("phone",editTextPhone.text.toString())
-                                edit.apply()
-                                edit.commit()
-                                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                                startActivity(intent, null)
-                                finish()
+                                    }
+                                }
+                                catch (err:java.lang.Exception){
+                                DNASnackBar.show(this@LoginActivity,"There seems to be some problem from our end")
+                                    Log.d("errrr", err.toString())
+                            }
+
 
                             }
 
 
-
+                        } else {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                task.getException().toString(),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            Log.d("errrr", task.exception?.message.toString())
 
                         }
-
-
-                    } else {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            task.getException().toString(),
-                            Toast.LENGTH_LONG
-                        ).show()
-                        Log.d("errrr", task.exception?.message.toString())
-
                     }
-                }
-            })
+                })
+        progressBar2.visibility=View.GONE
+
     }
     private val mCallBack: PhoneAuthProvider.OnVerificationStateChangedCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onCodeSent(s: String, forceResendingToken: PhoneAuthProvider.ForceResendingToken) {

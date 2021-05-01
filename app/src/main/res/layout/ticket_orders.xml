@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
 
+    android:clickable="true"
     app:cardCornerRadius="7dp">
 
     <LinearLayout
@@ -26,16 +29,31 @@
 
                 app:srcCompat="@drawable/google" />
 
-            <TextView
-                android:id="@+id/tvOrderTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
+                android:layout_weight="2"
+                android:orientation="vertical">
 
-                android:layout_weight="4"
-                android:text="TextView"
-                android:textAlignment="viewStart"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvOrderTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+
+                    android:layout_weight="4"
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvOrderPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="4"
+                    android:text="0"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvOrderDate"
@@ -45,8 +63,7 @@
                 android:layout_weight="0.5"
                 android:gravity="bottom"
                 android:paddingBottom="4dp"
-                android:text="TextView"
-                android:textAlignment="viewStart"
+
                 android:textStyle="bold|italic" />
 
         </LinearLayout>
@@ -56,8 +73,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#333333"
+            android:clickable="true"
             android:orientation="horizontal"
-            android:visibility="visible">
+            >
 
             <ImageView
                 android:id="@+id/imageView2"

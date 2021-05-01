@@ -4,13 +4,16 @@ package com.example.restaurant.classes
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurant.MapsActivityOrders
@@ -24,13 +27,18 @@ class OrderAdapter(
     RecyclerView.Adapter<OrderAdapter.ViewHolder>(){
     val formatter= SimpleDateFormat("dd MM yyyy HH.mm")
 
+
+
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         var title: TextView =view.findViewById(R.id.tvOrderTitle)
-        var price: TextView =view.findViewById(R.id.tvOrderDate)
+        var date: TextView =view.findViewById(R.id.tvOrderDate)
         var image: ImageView =view.findViewById(R.id.ivOrder)
         val layout:LinearLayout=view.findViewById(R.id.llOrderTrack)
         val layout1:LinearLayout=view.findViewById(R.id.llOrderHead)
+        val price:TextView =view.findViewById(R.id.tvOrderPrice)
+
+
 
 
     }
@@ -42,41 +50,55 @@ class OrderAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(list[position].status=="D"){
-            return
-        }
 
 
+        Log.d("ADAPTERLIST",list.toString())
+        val item=list[position]
+        val items= item.contents?.split(" x ")?.toTypedArray()
+        items?.get(0)?.let { Log.d("image name", it) }
+        holder.image.setImageBitmap(items?.get(0)?.let { findImage(it)?.image })
+        holder.title.text=item.contents
+        holder.price.text= item.price.toString()
 
-        holder.title.text=list[position].contents
-        val date=formatter.parse(list[position].date)
-        val dateString=date.date.toString()+"/"+date.month.toString()
+        if(item.date!=""){
+            val date = formatter.parse(item.date)
+            val dateString = date.date.toString() + "/" + date.month.toString()
 
-        holder.price.text= dateString
-        if(list[position].status=="B"){
+
+        holder.date.text= dateString}
+        if(item.status=="B"){
             holder.layout.visibility=View.VISIBLE
         }
         else{
             holder.layout.visibility=View.GONE
         }
 
-        holder.layout1.setOnClickListener {
-            if(list[position].status=="B" && list[position].deliveryBoyPhone!=null){
+        holder.layout.setOnClickListener {
+
+
+
                 val intent = Intent(context,MapsActivityOrders::class.java)
-                intent.putExtra("deliveryBoy", list[position].deliveryBoyPhone)
+                intent.putExtra("DbPhone",item.deliveryBoy)
+
+
                 startActivity(context,intent,null)
-            }
+
         }
+
 
 
 
     }
 
     override fun getItemCount(): Int {
+
         return list.size
     }
     fun findImage(name:String): Image? {
-        var image= BitmapFactory.decodeFile(context.getExternalFilesDir(null).toString() + File.separator + name + ".jpg")
+        var image: Bitmap?= BitmapFactory.decodeFile(context.getExternalFilesDir(null).toString() + File.separator + name + ".jpg")
+        if (image != null) {
+            Log.d("image size",image.byteCount.toString())
+        }
         var img=Image(name = name,image = image)
         return img
     }

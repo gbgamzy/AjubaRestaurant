@@ -32,14 +32,16 @@ interface Network {
     @GET("/Ajuba/customer/{phone}/orders")
     suspend fun getOrders(@Path("phone")phone:String):Response<List<Order>>
 
-     @GET("/Ajuba/customer/rider/{phone}")
-        suspend fun getRider(@Path("phone")phone:String):Response<Rider>
+    @GET("/Ajuba/customer/rider/{phone}")
+    suspend fun getRider(@Path("phone")phone:String):Response<Rider>
 
-        @GET("/Ajuba/getAdmin")
-        suspend fun getAdmin():Response<Admin>
+    @GET("/Ajuba/getAdmin")
+    suspend fun getAdmin():Response<Admin>
 
-        @POST("/Ajuba/placeOrder/{phone}")
-        suspend fun placeOrder(@Path("phone")phone:String,@Body order: Order):Response<Message>
+    @POST("/Ajuba/placeOrder/{phone}")
+    suspend fun placeOrder(@Path("phone")phone:String,@Body order: Order):Response<Message>
+
+
 
 
 

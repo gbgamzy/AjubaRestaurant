@@ -1,13 +1,11 @@
 package com.example.restaurant.classes
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.selection.SelectionTracker
@@ -15,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurant.R
 
 class AddressBookAdapter(
-        var list:ArrayList<Address>,
+        var list:ArrayList<Address>,var context:Context,
 var ad:AdapterInterface) :
         RecyclerView.Adapter<AddressBookAdapter.ViewHolder>(){
     var tracker: SelectionTracker<Long>? = null
@@ -25,6 +23,7 @@ var ad:AdapterInterface) :
         var title: TextView =view.findViewById(R.id.tvAddressTitle)
         var address: TextView =view.findViewById(R.id.tvAddress)
         var delete: ImageButton =view.findViewById(R.id.btDelete)
+        var layout: LinearLayout =view.findViewById(R.id.llAddress)
 
 
         fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
@@ -34,12 +33,19 @@ var ad:AdapterInterface) :
                 }
         fun bind(value: Int, isActivated: Boolean = false) {
 
+
             title.text=list[value].houseName
             address.text= list[value].streetAddress
             delete.setOnClickListener{
                 ad.removeAddress(list[value].uid)
             }
+            layout.setOnClickListener {
+                if(!isActivated)
+                    DNASnackBar.show(context,"Long press to select")
+            }
+
             itemView.isActivated = isActivated
+
             if(isActivated){
                 ad.selected(value)
             }

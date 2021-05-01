@@ -3,18 +3,20 @@ package com.example.restaurant.home
 
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.selection.SelectionPredicates
@@ -33,12 +35,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import java.lang.Math.PI
-import java.lang.StrictMath.PI
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.jar.Manifest
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
@@ -87,7 +87,7 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
 
         val adpater: ViewPagerAdapter = ViewPagerAdapter(lis, img, cart, this, this)
         val fcadapter: MenuChildAdapter = MenuChildAdapter(filteredCart, filteredCart, img, this)
-        adAdapter= AddressBookAdapter(address, this)
+        adAdapter= AddressBookAdapter(address, this,this)
         rvAddressBook.layoutManager=LinearLayoutManager(this)
         rvAddressBook.itemAnimator=DefaultItemAnimator()
         rvAddressBook.adapter=adAdapter
@@ -107,7 +107,9 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
 
         adAdapter.tracker = tracker
 
-
+        my_toolbar.setOnClickListener{
+            nestedScrollView.fullScroll(View.FOCUS_DOWN)
+        }
         textViewAddAddress.setOnClickListener{
             val intent =Intent(this, MapsActivity::class.java)
             startActivity(intent)
@@ -133,6 +135,9 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
 
             }
         }
+
+        nestedScrollView.isSmoothScrollingEnabled=true
+
         getTotal()
         btPhone.setOnClickListener{
             val p=admin?.phone
@@ -220,12 +225,17 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
 
 
             btPlaceOrder.setOnClickListener{
-                if(deliveryPrice==price){
+                Log.d("prices", (tracker as SelectionTracker<Long>?)?.selection.toString())
+
+                if(price==0.0 ){
                     DNASnackBar.show(this, "The cart is empty")
+                    return@setOnClickListener
                 }
-                if(!deliverable){
-                    DNASnackBar.show(this, "Long press an address within the delivery range")
+                if(!deliverable || (tracker as SelectionTracker<Long>?)?.selection?.size()==0){
+                    DNASnackBar.show(this, "Long press an address, to select a valid address")
+                    selected(-1)
                     rvAddressBook.requestFocus()
+                    return@setOnClickListener
                 }
                 else{
 
@@ -235,28 +245,38 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
                     dialog.setPositiveButton("Yes"){ dialogInterface: DialogInterface, i: Int ->
                         var content = ""
                         filteredCart.forEach{
-                           content += it.name+" x "+it.quantity
+                           content += it.name+" x "+it.quantity+", "
                         }
                         var date: Date = Date()
                         val i=formatter.format(date)
-                        val order = Order(0,content, price.roundToInt(), i, null,0,
+                        val order = Order(0,content, (deliveryPrice+price).roundToInt(), i, null,0,
                             address[addressIndex!!].houseName,address[addressIndex!!].streetAddress,
                             address[addressIndex!!].latitude,address[addressIndex!!].longitude,"",
-                            "","")
+                            "")
                         Log.d("vmErrorPlaceOrder", order.toString())
                         try{
                             CoroutineScope(Dispatchers.Main).launch {
+                                if(viewModel.reloadAdmin()?.registrationToken !=""){
                                 val msg = pref.getString("phone", "")?.let { it1 -> viewModel.placeOrder(it1, order) }
                                 if (msg == "SUCCESS") {
                                     DNASnackBar.show(this@HomeActivity, "Order Placed")
                                     viewModel.filteredCart.value=ArrayList()
 
-                                    viewModel.clearCart()
+                                    progressBar.visibility=View.VISIBLE
+                                    if(viewModel.reloadMenu())
+                                        progressBar.visibility=View.GONE
+                                    fcadapter.notifyDataSetChanged()
+                                    getTotal()
+
+
 
                                 } else if (msg == "ERROR") {
                                     DNASnackBar.show(this@HomeActivity, "There seems to be some problem")
                                 }
-                                Log.d("msg", msg!!)
+                                Log.d("msg", msg!!)}
+                                else{
+                                    DNASnackBar.show(this@HomeActivity,"Sorry we're not accepting orders right now!")
+                                }
                             }
                         }
                         catch (err: Exception){
@@ -278,10 +298,18 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
 
 
         CoroutineScope(Dispatchers.Main).launch {
+            progressBar.visibility=View.VISIBLE
             viewModel.getMenu()
+
             //viewModel.getCart()
 
-            viewModel.reloadMenu()
+            if(viewModel.reloadMenu()){
+                progressBar.visibility=View.GONE
+
+            }
+
+
+
 
         }
 
@@ -296,12 +324,14 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
         vpMenu.fakeDragBy(-7f)
         vpMenu.endFakeDrag()
 
+
+
     }
 
     override fun addToCart(item: Food) {
         item.quantity++
 
-        CoroutineScope(Dispatchers.Main).launch { 
+        CoroutineScope(Dispatchers.Main).launch {
 
             viewModel.addToCart(item)
             viewModel.getCart()
@@ -340,14 +370,14 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
             price+= it.quantity*it.price
         }
 
-        if(adAdapter.tracker?.selection?.isEmpty != true && price< admin?.minimumDistance!!){
+//        if(adAdapter.tracker?.selection?.isEmpty != true && price< admin?.minimumDistance!!){
+//
+//            deliverable=true
+//            deliveryPrice= admin?.minimumPrice!!
+//
+//        }
 
-            deliverable=true
-            deliveryPrice= admin?.minimumPrice!!
-
-        }
-
-        else if(adAdapter.tracker?.selection?.isEmpty != true && price>= admin?.minimumDistance!!) {
+        if(adAdapter.tracker?.selection?.isEmpty != true ) {
 
             admin?.latitude?.let {
                 admin?.longitude?.let { it1 ->
@@ -400,6 +430,9 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
                 deliveryPrice=0.0
 
             }
+            if(deliverable&&price< admin?.minimumDistance!!){
+                deliveryPrice= admin?.minimumPrice!!
+            }
             Log.d("MinN",distance.toString())
 
         }
@@ -431,6 +464,16 @@ class HomeActivity  : AppCompatActivity(),AdapterInterface {
         edit.apply()
         edit.commit()
         val intent:Intent=Intent(this, LoginActivity::class.java)
+        try{
+            CoroutineScope(IO).launch {
+                pref.getString("phone", "")?.let { viewModel.logout(it) }
+            }
+        }
+        catch(err:Exception){
+
+
+        }
+
         startActivity(intent)
         finish()
 

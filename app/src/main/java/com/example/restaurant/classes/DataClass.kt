@@ -1,14 +1,10 @@
 package com.example.restaurant.classes
 
 import android.graphics.Bitmap
-import androidx.lifecycle.LiveData
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-
 
 
 data class User(
@@ -32,7 +28,8 @@ data class Admin(
     var dist3: Double?,
     var price3: Double?,
     var minimumDistance:Double?,
-    var minimumPrice:Double?
+    var minimumPrice:Double?,
+    var registrationToken:String?
 )
 
 
@@ -43,7 +40,7 @@ data class Message(
 )
 data class Image(
     var name: String,
-    var image:Bitmap
+    var image:Bitmap?
     )
 
 @Entity(tableName="cart")
@@ -116,8 +113,8 @@ data class Order(
         var streetAddress:String?,
         var latitude:Double?,
         var longitude:Double?,
-        var deliveryBoyName:String?,
-        var deliveryBoyPhone:String?,
+
+        var deliveryBoy:String?,
 
 
         var phone:String="",
@@ -144,8 +141,8 @@ data class DbOrder(
         var streetAddress:String?,
         var latitude:Double?,
         var longitude:Double?,
-        var deliveryBoyName:String?,
-        var deliveryBoyPhone:String?,
+
+        var deliveryBoy:String?,
 
 
         var phone:String="",
@@ -155,9 +152,5 @@ data class DbOrder(
     @PrimaryKey(autoGenerate = true)
     var uid:Int=0
 }
-data class DeliveryBoy(
-        var deliveryBoyName:String?,
-        var deliveryBoyPhone: String?
-)
 
 

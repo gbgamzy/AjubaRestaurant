@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import javax.inject.Inject
@@ -35,14 +36,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MapsActivityOrders  : AppCompatActivity(), OnMapReadyCallback
      {
-            lateinit var api: Network
+         @Inject lateinit var api: Network
          private lateinit var handler: Handler
          private lateinit var runnable: Runnable
          private var interval: Long = 1000L
         private lateinit var map: GoogleMap
         private lateinit var fusedLocationClient: FusedLocationProviderClient
         private lateinit var lastLocation: Location
-        private var phone=""
+        lateinit var phone:String
 
 
 
@@ -51,15 +52,30 @@ class MapsActivityOrders  : AppCompatActivity(), OnMapReadyCallback
         setContentView(R.layout.activity_maps)
         cardViewAddressBox.visibility= View.GONE
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        phone=intent.extras?.getString("phone").toString()
+        phone= intent.extras?.getString("DbPhone","").toString()
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
 
         mapFragment.getMapAsync(this)
-        handler = Handler(Looper.getMainLooper())
+        CoroutineScope(Main).launch {
+            val a=api.getRider(phone).body()
+
+            if (a != null) {
+                a.latitude?.let { a.longitude?.let { it1 -> LatLng(it.toDouble(), it1.toDouble()) } }?.let {
+                    placeMarkerOnMap(
+                        it
+                    )
+                }
+            }
+            Log.d("GetLocationActivated",a.toString()+"kjhk"+phone)
+
+        }
+
+        /*handler = Handler(Looper.getMainLooper())
         runnable=Runnable{
             updateMap(handler)
-        }
+        }*/
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -69,9 +85,10 @@ class MapsActivityOrders  : AppCompatActivity(), OnMapReadyCallback
          private fun updateMap(handler: Handler) {
              CoroutineScope(IO).launch {
                  val a=api.getRider(phone).body()
+
                  lastLocation.latitude= a?.latitude?.toDouble()!!
                  lastLocation.longitude= a.longitude?.toDouble()!!
-                 Log.d("GetLocationActivated",a.toString())
+                 Log.d("GetLocationActivated",a.toString()+"kjhk")
 
              }
              placeMarkerOnMap(LatLng(lastLocation.latitude,lastLocation.longitude))
@@ -96,7 +113,7 @@ class MapsActivityOrders  : AppCompatActivity(), OnMapReadyCallback
             return
         }
 
-        map.isMyLocationEnabled = true
+        map.isMyLocationEnabled = false
 
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
             // Got last known location. In some rare situations this can be null.

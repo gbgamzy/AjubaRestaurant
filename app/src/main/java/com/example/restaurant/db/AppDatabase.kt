@@ -11,7 +11,7 @@ import com.example.restaurant.classes.*
 import java.util.concurrent.locks.Lock
 
 
-@Database (entities = [FoodMenu::class,Food::class,Address::class,DbOrder::class], version = 1,exportSchema = false)
+@Database (entities = [FoodMenu::class,Food::class,Address::class,DbOrder::class], version = 2,exportSchema = false)
 @TypeConverters(TypeConverter::class)
 
 abstract class AppDatabase : RoomDatabase() {
