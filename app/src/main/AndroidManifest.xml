@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.restaurant">
+    package="com.gaps.restaurant">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,7 +17,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:name=".classes.Hilt"
+
+        android:name="com.gaps.restaurant.classes.Hilt"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,40 +27,55 @@
         android:theme="@style/Theme.Restaurant"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".auth.LoginActivity">
+
+        <activity android:name="com.gaps.restaurant.auth.LoginActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OrdersActivity"
+        <activity
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:name="com.gaps.restaurant.OrdersActivity"
             android:theme="@style/Theme.Orders"/>
 
         <meta-data
+
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+
         <activity
-            android:name=".MapsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:name="com.gaps.restaurant.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".MapsActivityOrders"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:name="com.gaps.restaurant.MapsActivityOrders"
             android:label="Location" />
-        <activity android:name=".Test" />
-        <activity android:name=".home.HomeActivity" />
+
+        <activity
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:name="com.gaps.restaurant.home.HomeActivity" />
 
 
-        <activity android:name=".MainActivity">
 
-        </activity>
-        <service android:name=".classes.MyFirebaseInstanceIdService">
+
+
+        <service android:name="com.gaps.restaurant.classes.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".classes.CustomMessagingService"
-            android:exported="false">
+        <service android:name="com.gaps.restaurant.classes.CustomMessagingService"
+            android:exported="false"
+            >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"
                     />
@@ -66,9 +83,8 @@
             </intent-filter>
         </service>
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel"
-            android:value="AjubaRider_notification_id"/>
-
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel" />
     </application>
 
 </manifest>

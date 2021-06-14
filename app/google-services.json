@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1010648995759-ni88l7tk3hqg3amq1b0pfb36ncrstqkn.apps.googleusercontent.com",
+          "client_id": "1010648995759-rh62c944k85cvgkk46930fju9da93fst.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.ajubarider",
-            "certificate_hash": "a75d2dff86ef4f06b4e1b3fcea46c2c085836275"
+            "certificate_hash": "8e78f86cf56a29e214087eb3a72fd13ac0a34cf8"
           }
         },
         {
@@ -51,11 +51,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1010648995759-k22ahkn9pp2tiv8iqutrpqll2hvlteiq.apps.googleusercontent.com",
+          "client_id": "1010648995759-h6lpbkd9n2auj9037m9tv7krbg7e9m2t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.merchantapp",
-            "certificate_hash": "a75d2dff86ef4f06b4e1b3fcea46c2c085836275"
+            "certificate_hash": "8e78f86cf56a29e214087eb3a72fd13ac0a34cf8"
           }
         },
         {
@@ -81,18 +81,34 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1010648995759:android:63aa05acd6cd7e3d56415a",
+        "mobilesdk_app_id": "1:1010648995759:android:453b9a5365bd507156415a",
         "android_client_info": {
-          "package_name": "com.example.restaurant"
+          "package_name": "com.gaps.restaurant"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1010648995759-1b2makm1unmcdn4tfrmria7qur9kd6su.apps.googleusercontent.com",
+          "client_id": "1010648995759-jihpe375a81t40e5sithtn22af699323.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.restaurant",
-            "certificate_hash": "a75d2dff86ef4f06b4e1b3fcea46c2c085836275"
+            "package_name": "com.gaps.restaurant",
+            "certificate_hash": "f660595459c0e47fd6921fc2f1b0b6a5d01d235b"
+          }
+        },
+        {
+          "client_id": "1010648995759-krntk184os55g7k9to00c82doept8kdo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gaps.restaurant",
+            "certificate_hash": "8e78f86cf56a29e214087eb3a72fd13ac0a34cf8"
+          }
+        },
+        {
+          "client_id": "1010648995759-vlgacq5gki2mjvi5rtvhovgdktapempr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gaps.restaurant",
+            "certificate_hash": "1c8d1512ffc091e45cee7e340c6e7f4c0c377944"
           }
         },
         {
@@ -102,7 +118,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBsNhfPQvHwcUtbOkd1lwXPbFoxp6C3S8Y"
+          "current_key": "AIzaSyB4I_AyC29y_fDlizILRF4-SiGakIpAR8o"
         }
       ],
       "services": {

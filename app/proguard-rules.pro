@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes LineNumberTable,SourceFile
+-keep class com.gaps.restaurant.MapsActivity
+-keep class com.google.android.gms.maps.GoogleMap
+-keep class com.google.android.gms.maps.GoogleMapOptions
+-keep class com.google.android.gms.maps.SupportMapFragment
